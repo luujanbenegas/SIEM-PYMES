@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Mini SIEM</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+</head>
+<body>
+<div id="app">
+  <div v-if="!token">
+    <h2>Login</h2>
+    <form @submit.prevent="doLogin">
+      <input v-model="username" placeholder="user" />
+      <input type="password" v-model="password" placeholder="password" />
+      <input v-model="otp" placeholder="otp" />
+      <button>Login</button>
+    </form>
+  </div>
+  <div v-else>
+    <h2>Dashboard</h2>
+    <p>Avg detection: {{metrics.avg_detection_time}}s | Sources: {{metrics.active_sources}}</p>
+    <h3>Events</h3>
+    <ul><li v-for="e in events">{{e.type}} - {{e.user}} - {{e.timestamp}}</li></ul>
+    <h3>Alerts</h3>
+    <ul><li v-for="a in alerts">{{a.rule_name}} - {{a.message}} - {{a.status}}</li></ul>
+    <h3>Consejos de Seguridad</h3>
+    <ul>
+      <li>Use contraseñas fuertes.</li>
+      <li>Actualice sus sistemas regularmente.</li>
+    </ul>
+  </div>
+</div>
+<script>
+const { createApp } = Vue
+createApp({
+  data(){return{username:'',password:'',otp:'',token:null,events:[],alerts:[],metrics:{}}},
+  methods:{
+    async doLogin(){
+      const data = new URLSearchParams()
+      data.append('username', this.username)
+      data.append('password', this.password)
+      data.append('scope', this.otp)
+      const res = await fetch('/login', {method:'POST', body:data})
+      const j = await res.json()
+      this.token = j.access_token
+      this.loadData()
+    },
+    async loadData(){
+      const h = {Authorization:`Bearer ${this.token}`}
+      this.events = await (await fetch('/events', {headers:h})).json()
+      this.alerts = await (await fetch('/alerts', {headers:h})).json()
+      this.metrics = await (await fetch('/metrics', {headers:h})).json()
+    }
+  }
+}).mount('#app')
+</script>
+</body>
+</html>
