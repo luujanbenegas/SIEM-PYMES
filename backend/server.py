@@ -166,7 +166,8 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     return User(**user)
 
 def generate_2fa_code():
-    return ''.join([str(secrets.randbelow(10)) for _ in range(6)])
+    # Código fijo para demo
+    return '123456'
 
 async def send_2fa_email(email: str, code: str):
     # Simulación de envío de email - en producción usar un servicio real
