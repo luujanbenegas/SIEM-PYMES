@@ -13,8 +13,8 @@ import logging
 import uuid
 import hashlib
 import secrets
-import smtplib
-from email.mime.text import MimeText
+# import smtplib
+# from email.mime.text import MimeText
 from pathlib import Path
 import asyncio
 from collections import defaultdict, Counter
