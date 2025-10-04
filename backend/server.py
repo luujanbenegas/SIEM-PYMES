@@ -41,10 +41,10 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ.get('DB_NAME', 'siem_database')]
 
-# Security configuration
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Security configuration (simplified for demo)
+import hashlib
 security = HTTPBearer()
-SECRET_KEY = os.environ.get("SECRET_KEY", "your-secret-key-here")
+SECRET_KEY = "siem-pymes-secret-key-2025"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
