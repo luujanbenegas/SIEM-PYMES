@@ -242,7 +242,7 @@ async def register(user_data: UserCreate):
     await db.users.insert_one(user_dict)
     return user
 
-@api_router.post("/auth/login", response_model=Token)
+@api_router.post("/auth/login")
 async def login(user_credentials: UserLogin, background_tasks: BackgroundTasks):
     user = await db.users.find_one({"email": user_credentials.email})
     if not user or not verify_password(user_credentials.password, user["hashed_password"]):
