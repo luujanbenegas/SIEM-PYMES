@@ -219,6 +219,11 @@ async def process_security_event(event: SecurityEvent):
     
     return alerts_generated
 
+# Ruta principal
+@api_router.get("/")
+async def root():
+    return {"message": "SIEM PYMEs API v1.0", "status": "active"}
+
 # Rutas de autenticación
 @api_router.post("/auth/register", response_model=User)
 async def register(user_data: UserCreate):
