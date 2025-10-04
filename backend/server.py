@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, timezone
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
-from passlib.context import CryptContext
+# from passlib.context import CryptContext
 from jose import JWTError, jwt
 import os
 import logging
